@@ -1,5 +1,3 @@
-## Balancing Parentheses
-
 ### Introduction
 
 `Balancing parentheses` is a classic problem often seen in coding exercises. The task is to determine whether a given string of parentheses is balanced. The problem can extend to other types of brackets, such as curly braces {} and square brackets [].
@@ -128,16 +126,46 @@ In this solution, we do not solve the problem by relying on its incidental featu
 
 Instead, we derive the solution directly from the problem's description—its definition. This keeps problem and solution isomorphic. Once the definition is stated clearly, the correct program becomes obvious.
 
-For balanced brackets, the definition is:
+For balanced brackets, the formal definition is elegantly simple:**
 
 1. The empty string is balanced.
-2. A balanced string is any finite concatenation of items each of the form  
-   "(" balanced ")" or "[" balanced "]" or "{" balanced "}".
+2. A balanced string is any finite concatenation of *groups*, where each group has one of the forms:  
+   `"("` + *balanced* + `")"`  
+   `"["` + *balanced* + `"]"`  
+   `"{"` + *balanced* + `"}"`
 
-This approach is more natural in principle, even if the code does not look familiar at first glance. It couples the program structure to the grammar itself, so the source text is nothing more than the formal definition executed verbatim. The apparent complexity of the parser combinators is the cost of staying faithful to the specification; once the reader sees the one-to-one mapping between production rules and functions, the solution becomes self-evident and unlikely to be wrong.
+This definition is not only mathematically natural — it is *executable*. The structure of the program mirrors the grammar itself: the source code becomes a direct, verbatim encoding of the formal specification.
 
-The only remaining task is to implement the predicates that literally repeat this definition:  
-`many`, `choice`, `sequence`, `literal`.
+What may appear as “complexity” in the parser combinators is, in fact, the *price of fidelity* — the cost of refusing to distort the grammar for implementation convenience. Once the reader recognizes the one-to-one correspondence between production rules and combinators, the solution becomes **self-evident**, **mechanically derivable**, and **highly resistant to error**.
+```ebnf
+balanced ::= group*
+group    ::= '(' balanced ')' | '[' balanced ']' | '{' balanced '}'
+```
+To implement this definition *literally*, we need only four primitive combinators — each directly reflecting an EBNF construct:
+
+| EBNF Construct       | Parser Combinator         | Role & Example                                  |
+|----------------------|---------------------------|------------------------------------------------|
+| Terminal `'x'`       | `literal("x")`            | Matches exact string: `literal("(")`           |
+| Concatenation `A B`  | `sequence(A, B, ...)`     | Matches parsers in order: `sequence(lit("("), balanced, lit(")"))` |
+| Alternation `A \| B` | `choice(A, B, ...)`       | Matches first (or longest) success: `choice(seq1, seq2, seq3)` |
+| Repetition `A*`      | `many(A)`                 | Matches zero or more: `many(group)`            |
+
+> Each combinator is a function that takes parsers as input and returns a new parser — composing structure exactly as the grammar prescribes.  
+> There is no “glue code”, no “driver loop”, no “AST builder” — just the grammar, made runnable.
+
+The resulting parser is not an “implementation” of the grammar — **it *is* the grammar, made executable**.
+
+- ✅ No translation layer
+- ✅ No intermediate representation
+- ✅ No distortion for performance or convenience
+- ✅ The code *is* the specification
+
+This is the essence of **parser combinators**: turning grammar rules into first-class functions, preserving structure, meaning, and intent — so that correctness becomes a natural consequence of form.
+
+> 💡 *"When the grammar and the code are isomorphic, bugs have nowhere to hide."*
+
+The only remaining task is to implement the **parser combinators** that **directly mirror** this definition:  
+`many`, `choice`, `sequence`, and `literal`.
 
 ```Java
     @FunctionalInterface
@@ -217,8 +245,7 @@ The only remaining task is to implement the predicates that literally repeat thi
         return Either.left(acc);
     }
 ```
-With `many`, `choice`, `sequence` and `literal` in hand we can now *quote* the grammar verbatim.  
-The `balanced` parser is nothing more than rule 2 of the definition translated left-to-right:
+With `many`, `choice`, `sequence`, and `literal` in hand, we can now *quote* the grammar verbatim. The `balanced` parser is nothing more than **a direct, left-to-right translation** of Rule 2 from the formal definition:
 ```Java
     private static Parser balanced() {
         return input ->
