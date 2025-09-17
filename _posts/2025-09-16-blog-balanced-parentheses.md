@@ -1,4 +1,4 @@
-### Introduction
+### Balancing Brackets: From Stack to Parser Combinators in Java
 
 `Balancing parentheses` is a classic problem often seen in coding exercises. The task is to determine whether a given string of parentheses is balanced. The problem can extend to other types of brackets, such as curly braces {} and square brackets [].
 
@@ -338,4 +338,5 @@ public class BracketValidator {
     }
 }
 ```
+
 
