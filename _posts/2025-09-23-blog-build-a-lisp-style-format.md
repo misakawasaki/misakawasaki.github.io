@@ -1,4 +1,4 @@
-## **Building a Lisp-style `format` in JavaScript, Part 1: The Specification**
+### **Building a Lisp-style `format` in JavaScript, Part 1: The Specification**
 
 Template literals are one of the most beloved features of modern JavaScript. They make string interpolation simple and readable. But what happens when the logic gets complex? What if you need to loop over
 data, apply conditional formatting, or choose from multiple text fragments, all within your string definition?
@@ -33,9 +33,9 @@ directive       ::= "~" ( simple-directive | iteration | conditional )
 
 simple-directive::= "a" | "%" | "~"
 
-iteration       ::= "{" format-str "}"
+iteration       ::= "{" format-str "~}"
 
-conditional     ::= [ ":" ] "[" clauses "]"
+conditional     ::= [ ":" ] "[" clauses "~]"
 clauses         ::= format-str ( "~;" format-str )*
 ```
 
@@ -74,14 +74,14 @@ This is where our engine truly starts to shine, enabling logic and flow control 
     //=> "Fruits: apple, banana, cherry, "
     ```
 
-*   **`~[...]` (Conditional by Index)**: Consumes one numeric argument and uses it as a zero-based index to select a clause. Clauses are separated by `~;`.
+*   **`~[...~]` (Conditional by Index)**: Consumes one numeric argument and uses it as a zero-based index to select a clause. Clauses are separated by `~;`.
     ```javascript
     // Selects the clause at index 1
     format("The item is ~[small~;medium~;large~].", 1)
     //=> "The item is medium."
     ```
 
-*   **`~:[...]` (Conditional by Boolean)**: A powerful variant for truthiness. If the argument is `false`, `null`, or `undefined`, it selects the first clause. For any other value (`true`, a number, a
+*   **`~:[...~]` (Conditional by Boolean)**: A powerful variant for truthiness. If the argument is `false`, `null`, or `undefined`, it selects the first clause. For any other value (`true`, a number, a
     string, etc.), it selects the second.
     ```javascript
     format("Status: ~:[offline~;online~]", true)
@@ -122,7 +122,7 @@ To further illustrate the flexibility of these directives, let's explore a few m
 
 **1. Handling Plurals**
 
-A classic problem: you need to correctly write "1 file" vs. "2 files". The `~:[...]` directive is perfect for this. We can pass it a boolean condition.
+A classic problem: you need to correctly write "1 file" vs. "2 files". The `~:[...~]` directive is perfect for this. We can pass it a boolean condition.
 
 ```javascript
 function fileReport(count) {
@@ -134,7 +134,7 @@ fileReport(1); //=> "Found 1 file."
 fileReport(5); //=> "Found 5 files."
 fileReport(0); //=> "Found 0 files."
 ```
-Notice we pass two arguments: `count` is consumed by `~a`, and the result of `count !== 1` is consumed by `~:[...]` to decide whether to add the "s".
+Notice we pass two arguments: `count` is consumed by `~a`, and the result of `count !== 1` is consumed by `~:[...~]` to decide whether to add the "s".
 
 **2. Generating HTML Lists**
 
@@ -170,7 +170,7 @@ function userDisplay(user) {
 userDisplay(user1); //=> "Jane (Admin)"
 userDisplay(user2); //=> "John"
 ```
-Here, the `~:[...]` directive conditionally adds the "(Admin)" text based on the `isAdmin` flag, keeping the template clean and declarative.
+Here, the `~:[...~]` directive conditionally adds the "(Admin)" text based on the `isAdmin` flag, keeping the template clean and declarative.
 
 **4. Generating a SQL `IN` Clause**
 
