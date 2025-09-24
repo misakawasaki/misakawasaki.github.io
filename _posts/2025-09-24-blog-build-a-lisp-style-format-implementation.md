@@ -1,6 +1,6 @@
 ### **Building a Lisp-style `format` in JavaScript, Part 2: The Implementation**
 
-In [Part 1 of this series](https://misakawasaki.github.io/2025/09/23/blog-build-a-lisp-style-format.html), we laid the groundwork for our project by defining a clear specification for a JavaScript-based, Lisp-inspired `format` function. We defined our core principles
+In [Part 1 of this series](https://misakawasaki.github.io/2025/09/23/blog-build-a-lisp-style-format-specification.html), we laid the groundwork for our project by defining a clear specification for a JavaScript-based, Lisp-inspired `format` function. We defined our core principles
 and the exact behavior of our initial set of directives: `~a`, `~%`, `~~`, `~{...~}`, and `~[...~]`.
 
 Now, it's time to bring that specification to life. In this post, we'll dive deep into the implementation, focusing not just on making it work, but on building it in a clean, modular, and extensible way.
