@@ -227,7 +227,7 @@ This journey shows that by investing a little time in architecture, we can turn 
 For those who want to dive in, experiment, and use this engine in their own projects, we've prepared the complete source code. You can find both the extensible JavaScript version discussed in this post, as
 well as a fully-typed TypeScript version for enhanced robustness.
 
-*   **JavaScript Implementation:** `[https://gist.github.com/misakawasaki/9b839d3b47ffa53a16d1d767b61c42ba]`
-*   **TypeScript Implementation:** `[not yet]`
+*   **JavaScript Implementation:** [format.js](https://gist.github.com/misakawasaki/9b839d3b47ffa53a16d1d767b61c42ba)
+*   **TypeScript Implementation:** [not yet]()
 
 Feel free to use them, learn from them, and extend them to fit your needs. Happy formatting
