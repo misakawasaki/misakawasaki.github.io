@@ -58,7 +58,6 @@ The cache must exist *outside* the macro, in a persistent, global, runtime-acces
 This is the correct, standard, and robust solution:
 ```lisp 
 ;; 1. Define the cache ONCE, at load time. 
-
 (defvar *memoize-cache* (make-hash-table :test 'equal))
 
 (defmacro memoize ((f &rest args)) 
@@ -119,7 +118,6 @@ As a final "style" challenge, we asked: can we rewrite the standard `defvar` sol
 
 Yeah, it can. the simple, elegant solution is this:
 ```lisp 
-
 (defvar *memoize-cache* (make-hash-table :test 'equal))
 
 (defmacro memoize ((f &rest args)) 
