@@ -213,9 +213,6 @@ Inside this file, you use a special syntax. The most useful is `(:tree ...)`:
 ``` 
 This tells ASDF to **recursively search** the entire `/home/me/my-code/` directory for any `.asd` files it can find.
 
-### More about source-registry.conf
-
-
 ### Do They Overlap?
 
 No. `*central-registry*` and `source-registry.conf` are **two separate, parallel mechanisms**. Modifying one does not affect the other. 
