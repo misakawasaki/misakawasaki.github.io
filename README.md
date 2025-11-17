@@ -1,4 +1,4 @@
-# My SQL Blog
+# My Personal Blog
 
 This blog is hosted on GitHub Pages.  
 I built it by following Chad Baldwin's guide:  
